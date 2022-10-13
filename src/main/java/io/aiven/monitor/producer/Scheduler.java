@@ -1,8 +1,6 @@
 package io.aiven.monitor.producer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.istack.NotNull;
-import com.sun.istack.Nullable;
 import io.aiven.monitor.model.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +39,7 @@ public class Scheduler {
     @Scheduled(cron = "*/5 * * * * ?")
     public void cronJob() {
         RestTemplate restTemplate = new RestTemplate();
+        logger.info("Requesting " + url);
         long startTime = System.nanoTime();
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         long endTime = System.nanoTime();
@@ -62,7 +61,7 @@ public class Scheduler {
             String data = objectMapper.writeValueAsString(metrics);
             kafkaTemplate.send("site-metrics-topic", Long.toString(startTime), data);
         } catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
     }
 }
