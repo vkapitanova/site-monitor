@@ -40,6 +40,11 @@ There're 2 scripts to run the app: `run.sh` and `run-docker.sh`. Both have envir
 
 `run.sh` script requires java 17 to be installed on your machine, `run-docker.sh` requires docker to be installed on your machine.
 
+Example of the run command without file modification:
+```
+JDBC_URL='jdbc:postgresql://<host>:<port>/<db_name>' DB_USER=<db_user> DB_PASSWORD='<db_password>' KAFKA_URL='<host>:<port>' CERTS_DIR='<certificates_location>' ./run-docker.sh
+```
+
 ### Environment variables
 
 - ACTIVE_PROFILES (_mandaroty_, default: prodicer,consimer,web)
