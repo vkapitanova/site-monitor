@@ -1,7 +1,17 @@
+#
+# Build stage
+#
+FROM openjdk:17-jdk-slim AS build
+WORKDIR /app
+COPY . .
+RUN ./mvnw package -Dmaven.test.skip
+
+#
+# Package stage
+#
 FROM openjdk:17-jdk-slim
-ARG JAR_FILE=target/*.jar
 ARG CERTS_DIR=/tmp/certs
-COPY ${JAR_FILE} app.jar
+COPY --from=build /app/target/*.jar app.jar
 COPY /certs /tmp/certs
 ENTRYPOINT ["java","-jar", \
     "-Dspring.profiles.active=${ACTIVE_PROFILES:producer,consumer,web}", \

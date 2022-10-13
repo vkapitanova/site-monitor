@@ -12,9 +12,8 @@ CERTS_DIR=${CERTS_DIR:-'/tmp/certs'}
 TRUSTSTORE_PASSWORD=${TRUSTSTORE_PASSWORD:-password}
 KEYSTORE_PASSWORD=${KEYSTORE_PASSWORD:-password}
 
-cp -Rf "$CERTS_DIR" .
+cp -Rf "$CERTS_DIR" . || true
 
-./mvnw package -Dmaven.test.skip
 docker build -t aiven-monitor .
 docker stop monitor && docker rm monitor || true
 docker run --name monitor -p 8080:8080 --rm \
